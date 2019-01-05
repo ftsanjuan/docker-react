@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    build:
+      # context specifies where our files should come from to build this image
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # bookmark a folder already within the docker container
+      - /app/node_modules
+      # map current folder on host machine to /app
+      - .:/app
+    
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
