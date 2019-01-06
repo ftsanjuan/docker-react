@@ -1,0 +1,27 @@
+# Ensure comands run using sudo
+sudo: required
+
+# Ensure Docker is running
+services:
+  - docker
+
+
+# Ensure we build the image using Dockerfile.dev
+# since this has all the dependencies installed
+# to allow us to run tests
+before_install:
+  - docker build -t ftsanjuan/docker-react -f Dockerfile.dev .
+
+# script contains a series of commands that need to be run
+# e.g. running our test suite
+# Travis expects this commands to exit properly
+# if it receives anything other than a simple exit
+# it will assume the script failed.
+# Recall that running 'npm run test' in our app does not exit,
+# but instead provides us an interactive menu  after running our tests
+# For this reason, we can instead run with flags -- --coverage
+# which will return a coverage report and then exit.
+script:
+  - docker run ftsanjuan/docker-react npm run test -- --coverage
+
+# Deploy to AWS
