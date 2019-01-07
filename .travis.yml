@@ -24,4 +24,19 @@ before_install:
 script:
   - docker run ftsanjuan/docker-react npm run test -- --coverage
 
-# Deploy to AWS
+# Deploy to AWS Elastic Beanstalk
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "docker-react"
+  env: "DockerReact-env"
+  bucket_name: "elasticbeanstalk-us-east-1-419786716360"
+  bucket_path: "docker-react"
+
+  # Ensure deploys only happen when master branch is updated.
+  on:
+    branch: master
+
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
