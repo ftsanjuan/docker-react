@@ -11,6 +11,12 @@ RUN npm run build
 # by specifying a new FROM, it implicitly says the previous phase is done
 FROM nginx
 
+# Need to explicitly expose port 80.
+# On host machine, this command does nothing additional
+# but when deployed to AWS, Elasticbeanstalk explicitly looks for this 
+# EXPOSE instruction to determine which ports get exposed.
+EXPOSE 80
+
 # Refer to https://hub.docker.com/_/nginx under the "Hosting some simple static content"
 # section, which defines which folder is used by the nginx image for hosting static content
 COPY --from=builder /app/build /usr/share/nginx/html
